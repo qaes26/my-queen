@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلى رهف... من قيس</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'love-primary': '#e11d48', // Rose 600
+                        'love-light': '#ffe4e6',   // Rose 100
+                        'love-dark': '#881337',    // Rose 900
+                        'gold': '#d4af37',
+                    },
+                    fontFamily: {
+                        'tajawal': ['Tajawal', 'sans-serif'],
+                        'amiri': ['Amiri', 'serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #fff0f3 0%, #ffe4e6 100%);
+            scroll-behavior: smooth;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(225, 29, 72, 0.1);
+        }
+        .heart-bg {
+            position: fixed;
+            color: rgba(225, 29, 72, 0.05);
+            z-index: -1;
+            pointer-events: none;
+        }
+        /* Custom Scrollbar for Poem Box */
+        .poem-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .poem-scroll::-webkit-scrollbar-track {
+            background: #ffe4e6;
+            border-radius: 10px;
+        }
+        .poem-scroll::-webkit-scrollbar-thumb {
+            background: #e11d48;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-tajawal text-gray-800 antialiased overflow-x-hidden">
+
+    <!-- Background Hearts -->
+    <div class="heart-bg text-9xl top-10 left-10 animate-float"><i class="fas fa-heart"></i></div>
+    <div class="heart-bg text-8xl bottom-20 right-20 animate-float" style="animation-delay: 2s;"><i class="fas fa-heart"></i></div>
+    <div class="heart-bg text-6xl top-1/2 left-1/4 animate-pulse-slow"><i class="fas fa-heart"></i></div>
+
+    <!-- Hero Section -->
+    <header class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
+        <div class="z-10 animate-float">
+            <h1 class="text-6xl md:text-8xl font-amiri text-love-primary mb-4 drop-shadow-md">رهف & قيس</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mt-4 mb-8">حكاية حب بدأت بكلمة.. وما زالت تُكتب بالقلب</p>
+            <div class="text-4xl text-love-primary animate-bounce">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Box 1: 25 Poems -->
+    <section class="py-20 px-4 container mx-auto">
+        <div class="max-w-4xl mx-auto glass-card rounded-3xl p-8 relative overflow-hidden border-t-4 border-love-primary">
+            <div class="absolute -top-6 -right-6 bg-love-primary text-white w-24 h-24 rounded-full flex items-center justify-center text-3xl shadow-lg z-10">
+                <i class="fas fa-feather-alt"></i>
+            </div>
+            
+            <h2 class="text-3xl font-bold text-center text-love-dark mb-8 font-amiri">لأجلكِ كتبتُ وقرأتُ الشعر</h2>
+            
+            <div class="relative bg-white/50 rounded-xl p-6 min-h-[300px] flex flex-col justify-center items-center text-center shadow-inner">
+                <div id="poem-content" class="text-xl md:text-2xl font-amiri leading-loose text-gray-800 transition-opacity duration-500 opacity-100">
+                    <!-- Poem will appear here -->
+                </div>
+                <div class="mt-6 text-sm text-love-primary font-bold" id="poem-author"></div>
+            </div>
+
+            <div class="flex justify-between items-center mt-6">
+                <button onclick="prevPoem()" class="bg-love-light hover:bg-love-primary hover:text-white text-love-primary px-6 py-2 rounded-full transition duration-300">
+                    <i class="fas fa-arrow-right ml-2"></i> السابق
+                </button>
+                <span id="poem-counter" class="text-gray-500 font-mono">1 / 25</span>
+                <button onclick="nextPoem()" class="bg-love-light hover:bg-love-primary hover:text-white text-love-primary px-6 py-2 rounded-full transition duration-300">
+                     التالي <i class="fas fa-arrow-left mr-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Box 2: Nicknames (Asmaituki) -->
+    <section class="py-16 px-4 bg-white/30">
+        <div class="container mx-auto max-w-5xl">
+            <h2 class="text-4xl text-center font-amiri text-love-dark mb-12">أسميتكِ في قلبي...</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Nickname 1 -->
+                <div class="glass-card p-8 rounded-2xl text-center transform hover:scale-105 transition duration-300 group">
+                    <div class="text-5xl text-gold mb-4 group-hover:animate-wiggle"><i class="fas fa-crown"></i></div>
+                    <h3 class="text-3xl font-bold text-love-primary mb-2">أميرتي</h3>
+                    <p class="text-gray-600">لأنكِ تتربعين على عرش قلبي وحدك.</p>
+                </div>
+
+                <!-- Nickname 2 -->
+                <div class="glass-card p-8 rounded-2xl text-center transform hover:scale-105 transition duration-300 group">
+                    <div class="text-5xl text-pink-400 mb-4 group-hover:animate-bounce"><i class="fas fa-child-dress"></i></div>
+                    <h3 class="text-3xl font-bold text-love-primary mb-2">بنوتي</h3>
+                    <p class="text-gray-600">لأنكِ براءتي، ودلوعتي التي أحب إفسادها.</p>
+                </div>
+
+                <!-- Nickname 3 -->
+                <div class="glass-card p-8 rounded-2xl text-center transform hover:scale-105 transition duration-300 group">
+                    <div class="text-5xl text-purple-500 mb-4 group-hover:animate-pulse"><i class="fas fa-ghost"></i></div>
+                    <h3 class="text-3xl font-bold text-love-primary mb-2">روحي</h3>
+                    <p class="text-gray-600">وهل يعيش الإنسان بلا روح؟ أنتِ الحياة.</p>
+                </div>
+
+                <!-- Nickname 4 -->
+                <div class="glass-card p-8 rounded-2xl text-center transform hover:scale-105 transition duration-300 group">
+                    <div class="text-5xl text-red-600 mb-4 group-hover:animate-heartBeat"><i class="fas fa-heartbeat"></i></div>
+                    <h3 class="text-3xl font-bold text-love-primary mb-2">وتيني</h3>
+                    <p class="text-gray-600">الشريان المتصل بقلبي، الذي إن انقطع انقطعت حياتي.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Box 3: Our Story & Situations -->
+    <section class="py-20 px-4 container mx-auto">
+        <h2 class="text-4xl text-center font-amiri text-love-dark mb-16">رحلتنا معاً</h2>
+        
+        <div class="max-w-4xl mx-auto space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-love-primary before:to-transparent">
+            
+            <!-- Story 1 -->
+            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-love-primary group-[.is-active]:bg-love-primary text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow">
+                    <i class="fas fa-laptop"></i>
+                </div>
+                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] glass-card p-6 rounded-xl border border-gray-100 shadow-sm">
+                    <h3 class="text-xl font-bold text-love-dark mb-2">أول مرة حكينا</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        تتذكري؟ كانت عشان "البرزنتيشن". مجرد حديث رسمي، لكنه كان بداية أجمل قصة في حياتي.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Story 2 -->
+            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-love-primary text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] glass-card p-6 rounded-xl border border-gray-100 shadow-sm">
+                    <h3 class="text-xl font-bold text-love-dark mb-2">ليش حبيتك؟</h3>
+                    <ul class="text-gray-600 list-disc list-inside space-y-1">
+                        <li>أول شي لفتني <strong>مبادئك</strong> وأخلاقك.</li>
+                        <li>بعدين <strong>جمالك</strong> اللي خطف قلبي.</li>
+                        <li>بعدين <strong>سحرتيني</strong> وتعلقت فيكي بشكل ما بتخيله.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Story 3 -->
+            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-love-primary text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow">
+                    <i class="fas fa-coffee"></i>
+                </div>
+                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] glass-card p-6 rounded-xl border border-gray-100 shadow-sm">
+                    <h3 class="text-xl font-bold text-love-dark mb-2">أول لقاء</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        بصراحة؟ ما كان كثير حلو بالمعايير العادية، كان في توتر، بس كان <strong>عفوي</strong> وحقيقي، وهاد اللي خلاه مميز بذاكرتي.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Story 4 -->
+            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-love-primary text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] glass-card p-6 rounded-xl border border-gray-100 shadow-sm">
+                    <h3 class="text-xl font-bold text-love-dark mb-2">ثاني لقاء</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        هاد اللقاء كان <strong>بجنن</strong> بكل معنى الكلمة. كان خيالي، وكأنه الزمن وقف عشاننا احنا بس.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Final Surprise Section -->
+    <section class="py-24 px-4 text-center">
+        <h3 class="text-2xl text-gray-700 mb-8">في قلبي كلمة أخيرة إلك...</h3>
+        <button onclick="showLoveMessage()" class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-love-primary font-tajawal rounded-full hover:bg-love-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-love-primary shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+            <span>اضغطي هنا يا رهف</span>
+            <i class="fas fa-heart ml-2 group-hover:animate-beat"></i>
+            <div class="absolute inset-0 rounded-full animate-ping bg-love-primary opacity-20"></div>
+        </button>
+    </section>
+
+    <!-- Modal / Overlay -->
+    <div id="loveModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-500">
+        <div class="glass-card p-10 rounded-3xl max-w-md w-full mx-4 text-center transform scale-90 transition-transform duration-500" id="modalContent">
+            <div class="text-6xl text-love-primary mb-6 animate-pulse">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-amiri font-bold text-gray-800 mb-6 leading-relaxed">
+                بحبك رهوفتي<br>
+                <span class="text-love-primary">بنوتي</span> و <span class="text-gold">أميرتي</span>
+            </h2>
+            <div class="w-full h-px bg-gray-200 my-6"></div>
+            <p class="text-xl text-gray-600 font-amiri italic">
+                من أميرك... قيس
+            </p>
+            <button onclick="closeModal()" class="mt-8 px-6 py-2 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-700 transition">
+                أغلقي الرسالة
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-gray-500 text-sm">
+        <p>صُنع بحب من قيس إلى رهف &copy; 2025</p>
+    </footer>
+
+    <script>
+        // 1. Poetry Data (25 Selected Quotes)
+        const poems = [
+            { text: "أحبك جداً.. وجداً.. وجداً.. وأرفض من نار حبك أن أستقيلا", author: "نزار قباني" },
+            { text: "يَا سَيِّدَةَ النِّسَاءِ.. يَا أَمِيرَةَ الْقُلُوبِ.. حُبُّكِ قَدَرٌ لَا مَفَرَّ مِنْهُ", author: "قيس" },
+            { text: "وَلَقَد ذَكَرتُكِ والرِّماحُ نَواهِلٌ .. مِنّي وبِيضُ الهِندِ تَقطُرُ مِن دَمي", author: "عنترة بن شداد" },
+            { text: "أَغارُ عَلَيكِ مِن عَيني وَمِنّي .. وَمِنكِ وَمِن زَمانِكِ وَالمَكانِ", author: "نزار قباني" },
+            { text: "وَمَا كُنْتُ مِمَّنْ يَدْخُلُ الْعِشْقُ قَلْبَهُ .. وَلَكِنَّ مَنْ يُبْصِرْ جُفُونَكِ يَعْشَقُ", author: "المتنبي" },
+            { text: "أَمُرُّ عَلى الدِيارِ دِيارِ لَيلى .. أُقَبِّلُ ذا الجِدارَ وَذا الجِدارا", author: "قيس بن الملوح" },
+            { text: "لو كان لي قلبان لعشت بواحدٍ .. وأبقيت قلباً في هواك يتعذبُ", author: "قيس" },
+            { text: "أشهدُ ألا امرأةً إلا أنتِ .. تتقنُ اللعبَ بأقدراي", author: "نزار قباني" },
+            { text: "فَوَدِدتُ تَقبيلَ السُيوفِ لِأَنَّها .. لَمَعَت كَبارِقِ ثَغرِكِ المُتَبَسِّمِ", author: "عنترة بن شداد" },
+            { text: "أحبكِ.. لا تسألي لِماذا .. لأَنّي حينَ أحبُّكِ أُصبحُ لا شيء", author: "نزار قباني" },
+            { text: "زديني عشقاً زيديني .. يا أحلى نوبات جنوني", author: "نزار قباني" },
+            { text: "أنتِ النعيم لقلبي والعذاب له .. فما أمرّك في قلبي وأحلاكِ", author: "الشريف الرضي" },
+            { text: "قيسٌ أنا، وجنوني أنتِ يا رهف .. وما لغيرك في الوجدان مُتّسعُ", author: "قيس (المعاصر)" },
+            { text: "عيناكِ بحرٌ، وما كان الغريقُ سوى .. قلبي الذي في هواكِ بات مضطربا", author: "من القلب" },
+            { text: "وإني أحبك بقلبٍ لا يعرف اليأس، وبروحٍ لا تمل الانتظار", author: "خواطر عاشق" },
+            { text: "يا ساحرة العينين، كيف جعلتِ من الصخرِ ورداً؟", author: "غير معروف" },
+            { text: "في يسار صدري لكِ وطن، وعاصمة، وشعب، ومليكة هي أنتِ", author: "قيس" },
+            { text: "كلُّ القصائدِ في عينيكِ أقرؤها .. وكلُّ سحرٍ لديكِ اليومَ مكنونُ", author: "شعر عربي" },
+            { text: "لأجلكِ ترخص الروح، ويفنى العمر، ويبقى الحب", author: "إلى رهف" },
+            { text: "أنتِ البدايةُ.. وأنتِ مسكُ الختامِ", author: "نزار قباني" },
+            { text: "سبحان من صوّركِ في عيني كمالاً، وفي قلبي جمالاً", author: "من القلب" },
+            { text: "أراكِ في كل الوجوه، وكأن الأرض لا تحمل سواكِ", author: "قيس" },
+            { text: "يا وتين القلب، ويا نبض الحياة.. أحبك", author: "قيس" },
+            { text: "لا تطلبي مني دليلاً على حبي.. فهل يطلب الميت دليلاً على موته؟", author: "نزار قباني" },
+            { text: "وتبقى " + "رهف" + " في لغة الحب.. هي كل الحروف", author: "قيس" }
+        ];
+
+        let currentPoemIndex = 0;
+        const poemContent = document.getElementById('poem-content');
+        const poemAuthor = document.getElementById('poem-author');
+        const poemCounter = document.getElementById('poem-counter');
+
+        function updatePoem() {
+            // Fade out
+            poemContent.style.opacity = 0;
+            
+            setTimeout(() => {
+                poemContent.innerText = poems[currentPoemIndex].text;
+                poemAuthor.innerText = "- " + poems[currentPoemIndex].author;
+                poemCounter.innerText = `${currentPoemIndex + 1} / ${poems.length}`;
+                
+                // Fade in
+                poemContent.style.opacity = 1;
+            }, 500);
+        }
+
+        function nextPoem() {
+            currentPoemIndex = (currentPoemIndex + 1) % poems.length;
+            updatePoem();
+        }
+
+        function prevPoem() {
+            currentPoemIndex = (currentPoemIndex - 1 + poems.length) % poems.length;
+            updatePoem();
+        }
+
+        // Initialize First Poem
+        updatePoem();
+
+        // 2. Modal Logic
+        const modal = document.getElementById('loveModal');
+        const modalContent = document.getElementById('modalContent');
+
+        function showLoveMessage() {
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modalContent.classList.remove('scale-90');
+            modalContent.classList.add('scale-100');
+            
+            // Create some confetti-like hearts
+            createHearts();
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-90');
+        }
+
+        function createHearts() {
+            for(let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '<i class="fas fa-heart"></i>';
+                heart.style.position = 'fixed';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '100vh';
+                heart.style.color = '#e11d48';
+                heart.style.fontSize = (Math.random() * 30 + 10) + 'px';
+                heart.style.opacity = Math.random();
+                heart.style.zIndex = 100;
+                heart.style.transition = 'all 2s ease-out';
+                
+                document.body.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.style.transform = `translateY(-${Math.random() * 100 + 50}vh) rotate(${Math.random() * 360}deg)`;
+                    heart.style.opacity = 0;
+                }, 100);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 2100);
+            }
+        }
+    </script>
+</body>
+</html>
+
